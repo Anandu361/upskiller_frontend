@@ -1,12 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Progress from "./progress";
 import Profile from "./profile";
 import Achievements from "./achievements";
 import Courses from "./course";
 import scrollreveal from "scrollreveal";
+import axiosInstance from "../../utils/axiosInstance";
 
 export default function Dashboard() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get('/profile/');
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   useEffect(() => {
     const sr = scrollreveal({
       origin: "bottom",
@@ -29,7 +48,9 @@ export default function Dashboard() {
 
   return (
     <Section>
-      <h1 className="h1">Welcome,John Doe</h1>
+      <h1 className="h1">
+        Welcome, {loading ? "Loading..." : userData?.username || "User"}
+      </h1>
       <div className="grid">
         <div className="row__one">
           <Progress />
@@ -45,7 +66,6 @@ export default function Dashboard() {
 }
 
 const Section = styled.section`
-  margin-left: 18vw;
   padding: 2rem;
   height: cover;
   background-color: #C0C0C0;
@@ -77,7 +97,6 @@ const Section = styled.section`
   }
 
   @media screen and (min-width: 280px) and (max-width: 1080px) {
-    margin-left: 0;
     .grid {
       .row__one,
       .row__two {

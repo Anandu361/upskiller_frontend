@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import "./login.css";
 import { FaUserGraduate, FaLock, FaEnvelope, FaCalendarAlt } from "react-icons/fa";
-
+import { useUserStats } from "../../context/UserStatsContext";
 
 const Login = () => {
   const [action, setAction] = useState(""); // Tracks login/register toggle
@@ -17,6 +17,7 @@ const Login = () => {
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false); // Tracks loading state
+  const { resetStats } = useUserStats();
 
   const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -41,6 +42,7 @@ const Login = () => {
       alert("Login successful!");
       localStorage.setItem("accessToken", response.data.access);
       localStorage.setItem("refreshToken", response.data.refresh);
+      resetStats(); // Reset all stats when a user logs in
       setTimeout(() => {
         window.location.href = "/dashboard";
       }, 500);

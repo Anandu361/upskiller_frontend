@@ -5,34 +5,43 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FiClock } from "react-icons/fi";
 import { cardStyles } from "./reusablestyles";
+import { useUserStats } from "../../context/UserStatsContext";
 import scrollreveal from "scrollreveal";
 
 export default function Progress() {
+  const { stats } = useUserStats();
+
   useEffect(() => {
     const sr = scrollreveal({
       origin: "bottom",
       distance: "80px",
-      duration: 2000,
-      reset: false,
-    });
-    sr.reveal(
-      `
-        .progress-card,
-        .content,
-        .logo
-      `,
-      {
-        opacity: 0,
-        interval: 100,
+      duration: 1000,
+      reset: true,
+      opacity: 1,
+      scale: 1,
+      viewFactor: 0.2,
+      cleanup: true,
+      beforeReveal: (el) => {
+        el.style.opacity = "1";
       }
-    );
+    });
+
+    const cards = document.querySelectorAll('.progress-card');
+    cards.forEach((card, index) => {
+      sr.reveal(card, {
+        delay: index * 200
+      });
+    });
+
+    return () => sr.destroy();
   }, []);
+
   return (
     <Section>
       <div className="progress-card">
         <div className="content">
           <h5>Milestones Reached</h5>
-          <h2>8/10</h2>
+          <h2>{stats.milestones.current}/{stats.milestones.total}</h2>
         </div>
         <div className="logo">
           <BsBarChartFill />
@@ -44,7 +53,7 @@ export default function Progress() {
         </div>
         <div className="content">
           <h5>Tasks Completed</h5>
-          <h2>45</h2>
+          <h2>{stats.tasksCompleted}</h2>
         </div>
       </div>
       <div className="progress-card">
@@ -53,13 +62,13 @@ export default function Progress() {
         </div>
         <div className="content">
           <h5>Courses Completed</h5>
-          <h2>12</h2>
+          <h2>{stats.coursesCompleted}</h2>
         </div>
       </div>
       <div className="progress-card">
         <div className="content">
           <h5>Hours Spent Learning</h5>
-          <h2>120h</h2>
+          <h2>{stats.hoursSpent}h</h2>
         </div>
         <div className="logo">
           <FiClock />
@@ -83,13 +92,23 @@ const Section = styled.section`
     gap: 1rem;
     transition: 0.3s ease-in-out;
     background-color: #fff;
-    
+    opacity: 0;
+    visibility: visible;
 
     &:hover {
       background-color: #007bff;
       color: white;
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+      
       svg {
-        color: black;
+        color: white;
+      }
+      
+      .content {
+        h5, h2 {
+          color: white;
+        }
       }
     }
 

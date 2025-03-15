@@ -3,18 +3,11 @@ import styled from "styled-components";
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
 import { cardStyles } from "./reusablestyles";
 import scrollreveal from "scrollreveal";
-
-const data = [
-  { progress: 20 },
-  { progress: 30 },
-  { progress: 45 },
-  { progress: 60 },
-  { progress: 75 },
-  { progress: 90 },
-  { progress: 100 },
-];
+import { useUserStats } from "../../context/UserStatsContext";
 
 export default function Achievements() {
+  const { stats } = useUserStats();
+
   useEffect(() => {
     const sr = scrollreveal({
       origin: "bottom",
@@ -34,18 +27,29 @@ export default function Achievements() {
       }
     );
   }, []);
+
+  const data = [
+    { progress: 0 },
+    { progress: 0 },
+    { progress: 0 },
+    { progress: 0 },
+    { progress: 0 },
+    { progress: 0 },
+    { progress: 0 },
+  ];
+
   return (
     <Section>
       <div className="top">
         <div className="info">
           <h5>Total Achievements</h5>
-          <h1>15 Badges</h1>
+          <h1>{stats.achievements} Badges</h1>
           <div className="milestones">
             <h5>Milestones:</h5>
             <ul>
-              <li>Completed 10 Courses</li>
-              <li>Earned 15 Badges</li>
-              <li>Learning Streak: 30 Days</li>
+              <li>Completed {stats.coursesCompleted} Courses</li>
+              <li>Earned {stats.achievements} Badges</li>
+              <li>Learning Streak: {stats.learningStreak} Days</li>
             </ul>
           </div>
         </div>

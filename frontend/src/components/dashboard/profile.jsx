@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { cardStyles } from "./reusablestyles";
 import scrollreveal from "scrollreveal";
+import axiosInstance from "../../utils/axiosInstance";
 
 export default function Profile() {
   const [userData, setUserData] = useState({
@@ -33,38 +34,16 @@ export default function Profile() {
     );
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
-        console.log("Current token:", token);
-
-        if (!token) {
-          console.error("No access token found. Redirecting to login...");
-          setError("No access token found. Please log in.");
-          return;
-        }
-
-        const response = await fetch("http://127.0.0.1:8000/api/profile/", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Attach token
-          },
+        const response = await axiosInstance.get("/profile/");
+        setUserData({
+          username: response.data.username,
+          age: response.data.age,
+          gender: response.data.gender,
+          studyPreference: response.data.study_preference,
         });
-
-        if (response.ok) {
-          const data = await response.json();
-          setUserData({
-            username: data.username,
-            age: data.age,
-            gender: data.gender,
-            studyPreference: data.study_preference,
-          });
-        } else {
-          const errorData = await response.json();
-          console.error("Failed to fetch user data:", errorData);
-          setError(errorData.detail || "Failed to fetch user data.");
-        }
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setError("An error occurred while fetching data.");
+        setError(error.response?.data?.detail || "Failed to fetch user data.");
       }
     };
 

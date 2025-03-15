@@ -1,11 +1,8 @@
 import axios from "axios";
 
-// Create an Axios instance with the base URL and Authorization header
+// Create an Axios instance with the base URL
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/api", // Base URL for your API
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Include access token in the headers
-  },
 });
 
 // Request interceptor to ensure the latest token is used for every request

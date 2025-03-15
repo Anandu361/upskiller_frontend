@@ -3,8 +3,11 @@ import styled from "styled-components";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import { cardStyles } from "./reusablestyles";
 import scrollreveal from "scrollreveal";
+import { useUserStats } from "../../context/UserStatsContext";
 
 export default function Courses() {
+  const { stats } = useUserStats();
+
   useEffect(() => {
     const sr = scrollreveal({
       origin: "bottom",
@@ -24,30 +27,14 @@ export default function Courses() {
       }
     );
   }, []);
-  const courses = [
-    {
-      title: "React for Beginners",
-      instructor: "John Doe",
-      progress: "80%",
-    },
-    {
-      title: "Advanced JavaScript",
-      instructor: "Jane Smith",
-      progress: "45%",
-    },
-    {
-      title: "UI/UX Design Principles",
-      instructor: "Michael Lee",
-      progress: "60%",
-    },
-  ];
+
   return (
     <Section>
       <div className="title">
         <h2>Your Courses</h2>
       </div>
       <div className="course-list">
-        {courses.map((course) => (
+        {stats.courses.map((course) => (
           <div className="course" key={course.title}>
             <div className="course__details">
               <h3>{course.title}</h3>

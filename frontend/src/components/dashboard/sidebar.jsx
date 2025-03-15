@@ -8,7 +8,6 @@ import { GiTrophy } from "react-icons/gi";
 import { BsFillChatTextFill } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
-import scrollreveal from "scrollreveal";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -17,20 +16,6 @@ export default function Sidebar() {
   useEffect(() => {
     setCurrentLink(location.pathname); // Update current link based on the current route
   }, [location]);
-
-  useEffect(() => {
-    const sr = scrollreveal({
-      origin: "left",
-      distance: "80px",
-      duration: 1000,
-      reset: false,
-    });
-
-    sr.reveal(`.links > ul > li, .logout`, {
-      opacity: 0,
-      interval: 300,
-    });
-  }, []);
 
   return (
     <Section>
@@ -93,7 +78,7 @@ export default function Sidebar() {
 const Section = styled.section`
   position: fixed;
   left: 0;
-  background-color: transparent;
+  background-color: #1a1a1a;
   height: 100vh;
   width: 250px;
   display: flex;
@@ -102,6 +87,7 @@ const Section = styled.section`
   justify-content: space-between;
   padding: 2rem 0;
   gap: 2rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 
   .top {
     display: flex;
@@ -117,11 +103,11 @@ const Section = styled.section`
       align-items: center;
       gap: 1rem;
       padding-left: 1rem;
-      opacity: 1 !important; /* Force brand to always be visible */
+      opacity: 1 !important;
       
       svg {
-        color: #fff;
-        font-size: 4rem;
+        color: #007bff;
+        font-size: 2.5rem;
       }
       
       span {
@@ -135,7 +121,6 @@ const Section = styled.section`
     .links {
       display: flex;
       width: 100%;
-      
       
       ul {
         list-style-type: none;
@@ -152,26 +137,29 @@ const Section = styled.section`
             display: flex;
             align-items: center;
             gap: 1rem;
-            color: #fff;
+            color: #b0b0b0;
             padding: 0.8rem 1rem;
-            border-radius: 50px;
+            border-radius: 8px;
             transition: all 0.3s ease;
             width: 100%;
             
-            
             svg {
               font-size: 1.2rem;
+              color: #007bff;
             }
             
             span {
               font-size: 0.9rem;
-              font-weight: 600;
+              font-weight: 500;
             }
             
             &:hover {
-              background: #fff;
-              color: #000000;
-              box-shadow: 0 2px 5px rgb(255, 255, 255);
+              background: rgba(0, 123, 255, 0.1);
+              color: #fff;
+              
+              svg {
+                color: #fff;
+              }
             }
           }
         }
@@ -180,7 +168,11 @@ const Section = styled.section`
           a {
             background: #007bff;
             color: #fff;
-            box-shadow: 0 2px 5px rgb(0, 123, 255);
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+            
+            svg {
+              color: #fff;
+            }
           }
         }
       }
@@ -196,25 +188,25 @@ const Section = styled.section`
       display: flex;
       align-items: center;
       gap: 1rem;
-      color: #fff;
+      color: #b0b0b0;
       padding: 0.8rem 1rem;
-      border-radius: 50px;
+      border-radius: 8px;
       transition: all 0.3s ease;
       width: 100%;
       
       svg {
         font-size: 1.2rem;
+        color: #dc3545;
       }
       
       span {
         font-size: 0.9rem;
-        font-weight: 600;
+        font-weight: 500;
       }
       
       &:hover {
-        background: rgb(178, 34, 34);
-        color: #fff;
-        box-shadow: 0 2px 5px rgb(178, 34, 34);
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
       }
     }
   }
